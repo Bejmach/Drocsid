@@ -1,0 +1,19 @@
+{
+  "name": "drocsid_server",
+  "version": "1.0.0",
+  "description": "",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "author": "",
+  "type": "comonJS",
+  "main": "main.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.18.1",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "ws": "^8.18.1"
+  }
+}
