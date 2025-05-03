@@ -1,0 +1,65 @@
+// Discord Color Palette
+$blurple: #7289da;
+$full-white: #ffffff;
+$greyple: #99aab5;
+$dark-not-black: #2c2f33;
+$not-quite-black: #23272a;
+
+// Additional Discord Colors
+$status-online: #43b581;
+$status-idle: #faa61a;
+$status-dnd: #f04747;
+$status-offline: #747f8d;
+$status-streaming: #593695;
+$background-primary: #36393f;
+$background-secondary: #2f3136;
+$background-secondary-alt: #292b2f;
+$background-tertiary: #202225;
+$background-accent: #4f545c;
+$background-floating: #18191c;
+$background-modifier-hover: rgba(79, 84, 92, 0.16);
+$background-modifier-active: rgba(79, 84, 92, 0.24);
+$background-modifier-selected: rgba(79, 84, 92, 0.32);
+$background-modifier-accent: rgba(79, 84, 92, 0.06);
+$channeltextarea-background: #40444b;
+$text-normal: #dcddde;
+$text-muted: #72767d;
+$text-link: #00b0f4;
+$interactive-normal: #b9bbbe;
+$interactive-hover: #dcddde;
+$interactive-active: #ffffff;
+$scrollbar-thin-thumb: #202225;
+$scrollbar-thin-track: transparent;
+$scrollbar-auto-thumb: #202225;
+$scrollbar-auto-track: #2e3338;
+
+// Spacing
+$spacing-2: 2px;
+$spacing-4: 4px;
+$spacing-8: 8px;
+$spacing-12: 12px;
+$spacing-16: 16px;
+$spacing-20: 20px;
+$spacing-24: 24px;
+$spacing-32: 32px;
+
+// Sizes
+$server-size: 48px;
+$server-spacing: 8px;
+$channels-width: 240px;
+$members-width: 240px;
+
+// Z-index levels
+$z-index-tooltip: 9000;
+$z-index-modal: 8000;
+$z-index-popout: 7000;
+$z-index-header: 6000;
+
+// Border radius
+$border-radius-primary: 4px;
+$border-radius-server: 50%;
+
+// Animation Speed
+$animation-short: 0.1s;
+$animation-normal: 0.2s;
+$animation-long: 0.3s;

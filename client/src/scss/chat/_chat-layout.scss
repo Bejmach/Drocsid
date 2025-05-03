@@ -1,0 +1,132 @@
+@use '../variables';
+@use '../mixins';
+
+// Main chat area
+.chat-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 0;
+  
+  .chat-header {
+    height: 48px;
+    padding: 0 variables.$spacing-16;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04);
+    display: flex;
+    align-items: center;
+    gap: variables.$spacing-8;
+    
+    .channel-info {
+      display: flex;
+      align-items: center;
+      gap: variables.$spacing-8;
+      flex: 1;
+      min-width: 0;
+      
+      svg {
+        width: 24px;
+        height: 24px;
+        color: variables.$interactive-normal;
+      }
+      
+      h2 {
+        @include mixins.text-truncate;
+        font-size: 16px;
+      }
+    }
+    
+    .header-actions {
+      display: flex;
+      gap: variables.$spacing-16;
+      
+      button {
+        background: none;
+        border: none;
+        color: variables.$interactive-normal;
+        cursor: pointer;
+        width: 24px;
+        height: 24px;
+        @include mixins.flex-center;
+        
+        &:hover {
+          color: variables.$interactive-hover;
+        }
+      }
+    }
+  }
+  
+  .messages-container {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: variables.$spacing-16;
+    @include mixins.custom-scrollbar;
+  }
+  
+  .message-input-container {
+    padding: 0 variables.$spacing-16 variables.$spacing-24;
+    
+    .message-input {
+      background-color: variables.$channeltextarea-background;
+      border-radius: variables.$spacing-8;
+      padding: variables.$spacing-12 variables.$spacing-16;
+      display: flex;
+      align-items: center;
+      gap: variables.$spacing-16;
+      
+      .upload-button {
+        color: variables.$interactive-normal;
+        cursor: pointer;
+        
+        &:hover {
+          color: variables.$interactive-hover;
+        }
+      }
+      
+      input {
+        flex: 1;
+        background: none;
+        border: none;
+        outline: none;
+        color: variables.$text-normal;
+        font-size: 16px;
+        
+        &::placeholder {
+          color: variables.$text-muted;
+        }
+      }
+      
+      .message-actions {
+        display: flex;
+        gap: variables.$spacing-16;
+        
+        button {
+          background: none;
+          border: none;
+          color: variables.$interactive-normal;
+          cursor: pointer;
+          
+          &:hover {
+            color: variables.$interactive-hover;
+          }
+        }
+      }
+    }
+  }
+}
+
+.empty-chat-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: variables.$background-primary;
+  
+  h2 {
+    color: variables.$text-muted;
+    font-size: 20px;
+    font-weight: 500;
+  }
+}

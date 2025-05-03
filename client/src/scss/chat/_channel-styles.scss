@@ -1,0 +1,60 @@
+@use '../variables';
+@use '../mixins';
+// Channel styles
+.channel-category {
+  padding: variables.$spacing-8 variables.$spacing-8 variables.$spacing-4 variables.$spacing-16;
+  
+  h3 {
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 600;
+    color: variables.$interactive-normal;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    
+    svg {
+      margin-right: variables.$spacing-4;
+      transition: transform variables.$animation-short ease;
+    }
+    
+    &.collapsed svg {
+      transform: rotate(-90deg);
+    }
+    
+    &:hover {
+      color: variables.$interactive-hover;
+    }
+  }
+}
+
+.channel-item {
+  padding: variables.$spacing-4 variables.$spacing-8;
+  margin: 0 variables.$spacing-8;
+  display: flex;
+  align-items: center;
+  gap: variables.$spacing-4;
+  color: variables.$interactive-normal;
+  cursor: pointer;
+  @include mixins.hover-animation;
+  border-radius: variables.$border-radius-primary;
+  
+  svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+  
+  .channel-name {
+    @include mixins.text-truncate;
+    flex: 1;
+  }
+  
+  &:hover {
+    @include mixins.channel-hover;
+  }
+  
+  &.active {
+    @include mixins.channel-selected;
+  }
+}

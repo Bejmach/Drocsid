@@ -1,0 +1,178 @@
+@use '../variables';
+@use '../mixins';
+
+// Friends list styles
+.friends-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: variables.$background-primary;
+  
+  .friends-header {
+    padding: variables.$spacing-16;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    
+    h2 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: variables.$spacing-12;
+    }
+    
+    .status-filters {
+      display: flex;
+      gap: variables.$spacing-8;
+      
+      button {
+        padding: variables.$spacing-4 variables.$spacing-8;
+        border-radius: variables.$border-radius-primary;
+        background: none;
+        border: none;
+        color: variables.$interactive-normal;
+        cursor: pointer;
+        font-size: 14px;
+        
+        &:hover {
+          color: variables.$interactive-hover;
+          background-color: variables.$background-modifier-hover;
+        }
+        
+        &.active {
+          background-color: variables.$background-modifier-selected;
+          color: variables.$interactive-active;
+        }
+      }
+    }
+  }
+  
+  .friends-search {
+    padding: variables.$spacing-8 variables.$spacing-16;
+    display: flex;
+    align-items: center;
+    gap: variables.$spacing-8;
+    background-color: variables.$background-secondary;
+    
+    input {
+      flex: 1;
+      background: none;
+      border: none;
+      color: variables.$text-normal;
+      font-size: 14px;
+      outline: none;
+      
+      &::placeholder {
+        color: variables.$text-muted;
+      }
+    }
+    
+    svg {
+      color: variables.$interactive-normal;
+    }
+  }
+  
+  .friends-groups {
+    flex: 1;
+    overflow-y: auto;
+    padding: variables.$spacing-16;
+    @include mixins.custom-scrollbar;
+    
+    .friend-group {
+      margin-bottom: variables.$spacing-24;
+      
+      h3 {
+        text-transform: uppercase;
+        font-size: 12px;
+        font-weight: 600;
+        color: variables.$interactive-normal;
+        margin-bottom: variables.$spacing-8;
+      }
+    }
+    
+    .friend-item {
+      display: flex;
+      align-items: center;
+      padding: variables.$spacing-8;
+      border-radius: variables.$border-radius-primary;
+      cursor: pointer;
+      gap: variables.$spacing-12;
+      
+      &:hover {
+        background-color: variables.$background-modifier-hover;
+      }
+      
+      .friend-avatar {
+        width: 32px;
+        height: 32px;
+        position: relative;
+        
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+        
+        .status-indicator {
+          @include mixins.status-indicator(variables.$status-online);
+          
+          &.idle {
+            background-color: variables.$status-idle;
+          }
+          
+          &.dnd {
+            background-color: variables.$status-dnd;
+          }
+          
+          &.offline {
+            background-color: variables.$status-offline;
+          }
+          
+          &.streaming {
+            background-color: variables.$status-streaming;
+          }
+        }
+      }
+      
+      .friend-info {
+        flex: 1;
+        min-width: 0;
+        
+        .friend-name {
+          @include mixins.text-truncate;
+          font-size: 14px;
+          font-weight: 500;
+          color: variables.$interactive-active;
+          
+          .discriminator {
+            color: variables.$text-muted;
+            margin-left: variables.$spacing-4;
+          }
+        }
+        
+        .friend-activity {
+          @include mixins.text-truncate;
+          font-size: 12px;
+          color: variables.$text-muted;
+        }
+      }
+      
+      .friend-actions {
+        display: flex;
+        gap: variables.$spacing-8;
+        
+        button {
+          background: none;
+          border: none;
+          color: variables.$interactive-normal;
+          cursor: pointer;
+          padding: variables.$spacing-4;
+          border-radius: variables.$border-radius-primary;
+          
+          &:hover {
+            color: variables.$interactive-hover;
+            background-color: variables.$background-modifier-hover;
+          }
+        }
+      }
+    }
+  }
+}
