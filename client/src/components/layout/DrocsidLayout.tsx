@@ -85,6 +85,7 @@ const DrocsidLayout: React.FC = () => {
   };
   
   return (
+	
     <div className="app-container">
       <ServerSidebar 
         servers={servers} 
