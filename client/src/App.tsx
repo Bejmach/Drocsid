@@ -1,9 +1,14 @@
-import React from 'react';
-import DrocsidLayout from './components/layout/DrocsidLayout';
-import './scss/main.scss';
+import { useState } from 'react'
+import './App.css'
+import { VoiceChat } from './Components/VoiceChat'
 
 function App() {
-  return <DrocsidLayout />;
+
+  return (
+    <>
+      <VoiceChat/>
+    </>
+  )
 }
 
-export default App;
+export default App

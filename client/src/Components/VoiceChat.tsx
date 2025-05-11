@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { useMicrophone } from "../../hooks/MicRecording";
+import { useMicrophone } from "../hooks/MicRecording";
 
 // Set up WebSocket
 const ws = new WebSocket("ws://localhost:4000");
