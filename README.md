@@ -64,5 +64,11 @@ erDiagram
 
 ### Api requests
 > localhost:3000
-- ``/api/users/register/:name/:email/:password``
+- ``get::/api/users/register/:name/:email/:password``
   - register new user with name, email, password encrypted using sha 512 with salt from .env 
+- ``get::/api/users/login/:name/:email``
+  - returns user if user exists in database
+- ``get::/api/users/all``
+  - returns all users in db
+- ``get::/api/users/chat/:chatid``
+  - returns all users on specyfic chat
