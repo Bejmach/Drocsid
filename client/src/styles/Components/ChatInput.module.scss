@@ -1,35 +1,77 @@
-@use '../variables' as *;
 @use 'sass:color';
+@use '../variables' as *;
 
-.inputContainer {
-  padding: space(2);
-  background-color: $discord-secondary;
+.messageInputContainer {
+  padding: 0 space(2) space(3);
 }
 
-.chatInput {
-  background-color: $discord-dark !important;
-  border-radius: 8px !important;
-  padding: space(1) space(1.5) !important;
-  color: $discord-text !important;
-  border: 1px solid rgba(0, 0, 0, 0.2) !important;
+.messageInput {
+  background-color: $channeltextarea-background;
+  border-radius: 8px;
+  padding: space(1.5) space(2);
+  display: flex;
+  align-items: center;
+  gap: space(2);
 
-  &:focus-within {
-    border-color: $discord-primary !important;
+  width: 100%;
+
+  .uploadButton {
+    color: $interactive-normal;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $interactive-hover;
+      background-color: transparent;
+    }
   }
 
-  &::placeholder {
-    color: $discord-text-muted !important;
-    opacity: 1 !important;
+  .inputField {
+    flex: 1;
+    
+    .MuiInput-input {
+      background-color: transparent !important;
+      border: none;
+      color: white !important;
+      font-size: 1rem;
+      padding: 0;
+      box-shadow: none !important;
+
+      &::placeholder {
+        color: $text-muted;
+      }
+
+      &:focus-within {
+        outline: none !important; 
+        box-shadow: none !important;
+      }
+    }
+
+    .MuiInput-input:focus {
+      outline: none;
+    }
   }
-}
 
-.sendButton {
-  color: $discord-text-muted !important;
-  transition: color 0.2s ease !important;
-  padding: space(0.5) space(1) !important;
+  .messageActions {
+    display: flex;
+    align-items: center;
+  }
 
-  &:hover {
-    color: $discord-text !important;
-    background-color: transparent !important;
+  .actionButton {
+    color: $interactive-normal;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $interactive-hover;
+      background-color: transparent;
+    }
+  }
+
+  .sendButton {
+    background-color: $brand-experiment;
+    color: white;
+
+    &:hover {
+      background-color: color.adjust($brand-experiment, $lightness: -10%);
+    }
   }
 }
