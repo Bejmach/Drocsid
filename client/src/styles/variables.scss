@@ -1,0 +1,23 @@
+@use 'sass:color';
+
+$discord-dark: #36393f;
+$discord-secondary: #2f3136;
+$discord-primary: #5865F2;
+$discord-text: #dcddde;
+$discord-text-muted: #72767d;
+$discord-hover: #3a3e44;
+
+$server-list-width: 72px;
+$channels-width: 240px;
+$members-width: 240px;
+$input-height: 44px;
+
+$spacing-unit: 8px;
+@function space($multiplier) {
+  @return $spacing-unit * $multiplier;
+}
+
+$server-icon-bg: #313338;
+$server-icon-hover: #5865f2;
+$server-add-color: #23a55a;
+$server-add-hover: #3ba55d;

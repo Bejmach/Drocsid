@@ -1,14 +1,46 @@
-import { useState } from 'react'
-import './App.css'
-import { VoiceChat } from './Components/VoiceChat'
+import { CssBaseline, Box } from '@mui/joy';
+import ChatInput from './Components/ChatInput';
+import ChannelList from './Components/ChannelList';
+import MemberList from './Components/MemberList';
+import Message from './Components/Message';
+import ServerList from './Components/ServerList';
+import './styles/App.scss';
 
-function App() {
-
+export default function App() {
   return (
-    <>
-      <VoiceChat/>
-    </>
-  )
-}
+    <Box className="app-container">
+      <CssBaseline />
+      {/* Server List */}
+      <Box className="server-list">
+        <ServerList />
+      </Box>
 
-export default App
+      {/* Channels Sidebar */}
+      <Box className="channels-sidebar">
+        <ChannelList />
+      </Box>
+
+      {/* Main Chat Area */}
+      <Box className="main-chat">
+        {[...Array(20)].map((_, i) => (
+          <Message
+            key={i}
+            username={`User ${i + 1}`}
+            content={`Message ${i + 1} in the chat`}
+            timestamp={`${i + 1}:00 PM`}
+          />
+        ))}
+      </Box>
+
+      {/* Chat Input */}
+      <Box className="chat-input-container">
+        <ChatInput />
+      </Box>
+
+      {/* Members List */}
+      <Box className="members-list">
+        <MemberList />
+      </Box>
+    </Box>
+  );
+}

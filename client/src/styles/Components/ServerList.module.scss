@@ -1,0 +1,81 @@
+@use '../../styles/variables' as *;
+
+.serverList {
+  width: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: space(1) 0;
+  gap: space(1);
+  background-color: $discord-secondary;
+
+  .serverIcon {
+    background-color: $server-icon-bg;
+    color: white;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 
+      background-color 0.2s ease,
+      border-radius 0.2s ease,
+      color 0.2s ease;
+    cursor: pointer;
+    position: relative;
+
+    &:hover {
+      background-color: $server-icon-hover;
+      border-radius: 35%;
+    }
+
+    &:focus,
+    &:focus-visible {
+      outline: 2px solid $server-icon-hover;
+    }
+
+    // Active state indicator (left bar)
+    &::before {
+      content: '';
+      position: absolute;
+      left: -8px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 0;
+      width: 4px;
+      background-color: white;
+      border-radius: 0 4px 4px 0;
+      transition: height 0.2s ease;
+    }
+
+    &.active {
+      border-radius: 35%;
+      
+      &::before {
+        height: 40%;
+      }
+    }
+  }
+
+  .addServer {
+    margin-top: auto;
+    background-color: $server-icon-bg;
+    color: $server-add-color;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 
+      background-color 0.2s ease,
+      color 0.2s ease;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $server-add-hover;
+      color: white;
+    }
+  }
+}

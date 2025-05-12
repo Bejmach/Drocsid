@@ -1,0 +1,21 @@
+@use '../variables' as *;
+@use 'sass:color';
+
+.channelList {
+  padding: space(2);
+  
+  .channelItem {
+    padding: space(1);
+    color: $discord-text-muted;
+    border-radius: 4px;
+    
+    &:hover {
+      background-color: $discord-hover;
+      color: $discord-text;
+    }
+    
+    &.active {
+      background-color: $discord-dark;
+    }
+  }
+}

@@ -1,0 +1,39 @@
+@use '../variables' as *;
+
+.memberList {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.memberItem {
+  padding: space(1) space(2) !important;
+  position: relative;
+  gap: space(1.5);
+
+  .memberName {
+    color: $discord-text;
+    font-size: 0.95rem;
+  }
+
+  .statusIndicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    position: absolute;
+    left: 28px;
+    bottom: 0;
+    border: 2px solid $discord-secondary;
+
+    &.online {
+      background-color: #3ba55c;
+    }
+
+    &.idle {
+      background-color: #faa81a;
+    }
+
+    &.offline {
+      background-color: #747f8d;
+    }
+  }
+}

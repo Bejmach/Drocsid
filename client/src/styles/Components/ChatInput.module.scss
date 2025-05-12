@@ -1,0 +1,35 @@
+@use '../variables' as *;
+@use 'sass:color';
+
+.inputContainer {
+  padding: space(2);
+  background-color: $discord-secondary;
+}
+
+.chatInput {
+  background-color: $discord-dark !important;
+  border-radius: 8px !important;
+  padding: space(1) space(1.5) !important;
+  color: $discord-text !important;
+  border: 1px solid rgba(0, 0, 0, 0.2) !important;
+
+  &:focus-within {
+    border-color: $discord-primary !important;
+  }
+
+  &::placeholder {
+    color: $discord-text-muted !important;
+    opacity: 1 !important;
+  }
+}
+
+.sendButton {
+  color: $discord-text-muted !important;
+  transition: color 0.2s ease !important;
+  padding: space(0.5) space(1) !important;
+
+  &:hover {
+    color: $discord-text !important;
+    background-color: transparent !important;
+  }
+}
