@@ -1,7 +1,7 @@
-@use '../../styles/variables' as *;
+@use '../variables' as *;
 
 .serverList {
-  width: 72px;
+  width: 160px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,25 +9,30 @@
   gap: space(1);
   background-color: $discord-secondary;
 
+  .serverButton{
+    &:hover {
+      outline: none !important;
+      border: none;
+    }
+  }
+
   .serverIcon {
     background-color: $server-icon-bg;
     color: white;
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
+    border-radius: 20px; 
+    width: 120px;
+    height: 40px; 
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: 
-      background-color 0.2s ease,
-      border-radius 0.2s ease,
-      color 0.2s ease;
+    transition: all 0.2s ease;
     cursor: pointer;
     position: relative;
-
+    padding: 0 space(1);
     &:hover {
       background-color: $server-icon-hover;
-      border-radius: 35%;
+      transform: scale(1.05); 
+       outline: none !important; 
     }
 
     &:focus,
@@ -35,26 +40,12 @@
       outline: 2px solid $server-icon-hover;
     }
 
-    // Active state indicator (left bar)
     &::before {
-      content: '';
-      position: absolute;
-      left: -8px;
-      top: 50%;
-      transform: translateY(-50%);
-      height: 0;
-      width: 4px;
-      background-color: white;
-      border-radius: 0 4px 4px 0;
-      transition: height 0.2s ease;
+      display: none;
     }
 
     &.active {
-      border-radius: 35%;
-      
-      &::before {
-        height: 40%;
-      }
+      background-color: $server-active;
     }
   }
 
@@ -62,20 +53,21 @@
     margin-top: auto;
     background-color: $server-icon-bg;
     color: $server-add-color;
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
+    border-radius: 20px;
+    width: 120px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: 
-      background-color 0.2s ease,
-      color 0.2s ease;
+    transition: all 0.2s ease;
     cursor: pointer;
 
     &:hover {
       background-color: $server-add-hover;
       color: white;
+      transform: scale(1.05);
+      outline: none;
     }
+
   }
 }

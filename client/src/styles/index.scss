@@ -45,16 +45,7 @@ button {
   background-color: $discord-secondary;
   cursor: pointer;
   transition: border-color 0.25s;
-  color: $discord-text;
-  
-  &:hover {
-    border-color: $discord-primary;
-  }
-  
-  &:focus,
-  &:focus-visible {
-    outline: 4px auto $discord-primary;
-  }
+  color: $discord-text; 
 }
 
 ::-webkit-scrollbar {

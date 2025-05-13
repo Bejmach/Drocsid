@@ -1,5 +1,6 @@
 @use 'sass:color';
 
+// Discord-like color scheme
 $discord-dark: #36393f;
 $discord-secondary: #2f3136;
 $discord-primary: #5865F2;
@@ -17,14 +18,22 @@ $spacing-unit: 8px;
   @return $spacing-unit * $multiplier;
 }
 
-$server-icon-bg: #313338;
-$server-icon-hover: #5865f2;
+// Server icon colors
+$server-icon-bg: #2f3136;
+$server-icon-hover: #23a55a;
 $server-add-color: #23a55a;
 $server-add-hover: #3ba55d;
+$server-active: #23a55a;
 
+// Channel textarea colors
 $channeltextarea-background: #40444b;
 $interactive-normal: #b9bbbe;
 $interactive-hover: #dcddde;
 $text-normal: #dcddde;
 $text-muted: #72767d;
-$brand-experiment: #5865f2;
+$brand-experiment: #23a55a;
+
+// Status colors
+$status-online: #3ba55c;
+$status-idle: #faa81a;
+$status-offline: #747f8d;
