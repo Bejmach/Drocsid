@@ -1,15 +1,18 @@
+// MultipleFiles/App.tsx
 import * as React from 'react';
 import { CssBaseline, Box } from '@mui/joy';
 import ChatInput from './Components/ChatInput';
 import MemberList from './Components/MemberList';
 import Message from './Components/Message';
 import ServerList from './Components/ServerList';
+import FriendsList from './Components/FriendList';
 import './styles/App.scss';
 import messagesStore from './data/messeges';
 
 export default function App() {
   const [selectedServer, setSelectedServer] = React.useState('1');
   const [messages, setMessages] = React.useState(messagesStore.getMessagesByServer(selectedServer));
+  const [isFriendsList, setIsFriendsList] = React.useState(false);
 
   React.useEffect(() => {
     const updateMessages = () => {
@@ -28,12 +31,25 @@ export default function App() {
     setMessages(prev => [...prev, newMessage]);
   };
 
+  const toggleFriendsList = () => {
+    setIsFriendsList(!isFriendsList);
+  };
+
   return (
     <Box className="app-container">
       <CssBaseline />
-      {/* Server List */}
+      
+      {/* Server List or Friends List */}
       <Box className="server-list">
-        <ServerList selectedServer={selectedServer} onServerChange={setSelectedServer} />
+        {isFriendsList ? (
+          <FriendsList onBack={toggleFriendsList} />
+        ) : (
+          <ServerList 
+            selectedServer={selectedServer}
+            onServerChange={setSelectedServer}
+            onToggleFriends={toggleFriendsList}
+          />
+        )}
       </Box>
 
       {/* Main Chat Area */}

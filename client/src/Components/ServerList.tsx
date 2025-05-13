@@ -1,11 +1,11 @@
+// MultipleFiles/ServerList.tsx
 import { Box, Tooltip } from '@mui/joy';
-import HomeIcon from '@mui/icons-material/Home';
 import AddIcon from '@mui/icons-material/Add';
 import styles from '../styles/Components/ServerList.module.scss';
 import { Typography } from '@mui/joy';
+import HomeIcon from '@mui/icons-material/Home';
 
 const servers = [
-  { id: 'home', icon: <HomeIcon />, name: 'Home', tooltip: 'Home' },
   { id: '1', icon: 'A', name: 'Server A', tooltip: 'Server A' },
   { id: '2', icon: 'B', name: 'Server B', tooltip: 'Server B' },
 ];
@@ -13,11 +13,27 @@ const servers = [
 interface ServerListProps {
   selectedServer: string;
   onServerChange: (serverId: string) => void;
+  onToggleFriends: () => void;
 }
 
-export default function ServerList({ selectedServer, onServerChange }: ServerListProps) {
+export default function ServerList({ 
+  selectedServer, 
+  onServerChange,
+  onToggleFriends 
+}: ServerListProps) {
   return (
     <Box className={styles.serverList}>
+      <Tooltip title="Friends List" placement="right">
+        <button 
+          className={`${styles.serverIcon} ${styles.addServer}`}
+          onClick={onToggleFriends}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <HomeIcon />
+          </Box>
+        </button>
+      </Tooltip>
+
       {servers.map((server) => (
         <Tooltip key={server.id} title={server.tooltip} placement="right">
           <button
@@ -26,11 +42,7 @@ export default function ServerList({ selectedServer, onServerChange }: ServerLis
           > 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               {server.icon}
-              {server.id !== 'home' && (
-                <Typography sx={{ color: 'white' }}>
-                  {server.name}
-                </Typography>
-              )}
+              <Typography sx={{ color: 'white' }}>{server.name}</Typography>
             </Box>
           </button>
         </Tooltip>
