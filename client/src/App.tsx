@@ -1,6 +1,5 @@
 import { CssBaseline, Box } from '@mui/joy';
 import ChatInput from './Components/ChatInput';
-import ChannelList from './Components/ChannelList';
 import MemberList from './Components/MemberList';
 import Message from './Components/Message';
 import ServerList from './Components/ServerList';
@@ -13,11 +12,6 @@ export default function App() {
       {/* Server List */}
       <Box className="server-list">
         <ServerList />
-      </Box>
-
-      {/* Channels Sidebar */}
-      <Box className="channels-sidebar">
-        <ChannelList />
       </Box>
 
       {/* Main Chat Area */}
@@ -34,7 +28,7 @@ export default function App() {
 
       {/* Chat Input */}
       <Box className="chat-input-container">
-        <ChatInput />
+        <ChatInput serverId={"1"} />
       </Box>
 
       {/* Members List */}

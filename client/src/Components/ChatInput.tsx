@@ -3,16 +3,16 @@ import {
   Box,
   IconButton,
   Stack,
-  Input
 } from '@mui/joy';
 import { AddCircle, EmojiEmotions, Gif, Image, Send } from '@mui/icons-material';
 import styles from '../styles/Components/ChatInput.module.scss';
+import { Input } from '@mui/material';
 
 interface MessageInputProps {
-  channelId: string;
+  serverId: string;
 }
 
-const MessageInput: React.FC<MessageInputProps> = ({ channelId }) => {
+const MessageInput: React.FC<MessageInputProps> = ({ serverId }) => {
   const [message, setMessage] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -36,12 +36,11 @@ const MessageInput: React.FC<MessageInputProps> = ({ channelId }) => {
 
         <Input
           fullWidth
-          variant="plain"
-          placeholder={`Message #${channelId}`}
+          placeholder={`Message #${serverId}`}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           className={styles.inputField}
-          sx={{background: 'none'}}
+          disableUnderline
         />
 
         <Stack direction="row" spacing={1} className={styles.messageActions}>
