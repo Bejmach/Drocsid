@@ -1,5 +1,7 @@
+// MultipleFiles/App.scss
 @use './variables' as *;
 @use 'sass:color';
+
 .app-container {
   display: grid;
   grid-template-columns: auto 1fr $members-width;

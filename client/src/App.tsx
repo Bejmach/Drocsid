@@ -1,4 +1,3 @@
-// MultipleFiles/App.tsx
 import * as React from 'react';
 import { CssBaseline, Box } from '@mui/joy';
 import ChatInput from './Components/ChatInput';
@@ -7,28 +6,47 @@ import Message from './Components/Message';
 import ServerList from './Components/ServerList';
 import FriendsList from './Components/FriendList';
 import './styles/App.scss';
-import messagesStore from './data/messeges';
+import messagesStore from './hooks/messeges';
 
 export default function App() {
-  const [selectedServer, setSelectedServer] = React.useState('1');
-  const [messages, setMessages] = React.useState(messagesStore.getMessagesByServer(selectedServer));
+  const [selectedServer, setSelectedServer] = React.useState<string>('1');
+  const [messages, setMessages] = React.useState<Message[]>([]);
   const [isFriendsList, setIsFriendsList] = React.useState(false);
 
   React.useEffect(() => {
     const updateMessages = () => {
-      setMessages(messagesStore.getMessagesByServer(selectedServer));
+      if (selectedServer) {
+        if (isFriendsList) {
+          setMessages(messagesStore.getMessagesByDM(selectedServer));
+        } else {
+          setMessages(messagesStore.getMessagesByServer(selectedServer));
+        }
+      }
     };
     updateMessages();
-  }, [selectedServer]);
+  }, [selectedServer, isFriendsList]);
 
   const handleSendMessage = (content: string) => {
-    const newMessage = messagesStore.addMessage({
-      userId: '1',
-      content,
-      serverId: selectedServer,
-      time: new Date().toLocaleTimeString()
-    });
-    setMessages(prev => [...prev, newMessage]);
+    if (selectedServer) {
+      if (isFriendsList) {
+        const newMessage = messagesStore.addMessage({
+          userId: '1',
+          content,
+          serverId: selectedServer,
+          targetId: selectedServer,
+          time: new Date().toLocaleTimeString()
+        });
+        setMessages(prev => [...prev, newMessage]);
+      } else {
+        const newMessage = messagesStore.addMessage({
+          userId: '1',
+          content,
+          serverId: selectedServer,
+          time: new Date().toLocaleTimeString()
+        });
+        setMessages(prev => [...prev, newMessage]);
+      }
+    }
   };
 
   const toggleFriendsList = () => {
@@ -42,7 +60,11 @@ export default function App() {
       {/* Server List or Friends List */}
       <Box className="server-list">
         {isFriendsList ? (
-          <FriendsList onBack={toggleFriendsList} />
+          <FriendsList 
+            onBack={toggleFriendsList}
+            onSelectFriend={(friendId) => setSelectedServer(friendId)}
+            selectedServer={selectedServer}
+          />
         ) : (
           <ServerList 
             selectedServer={selectedServer}
@@ -68,6 +90,7 @@ export default function App() {
       <Box className="chat-input-container">
         <ChatInput 
           serverId={selectedServer}
+          isFriendsList={isFriendsList}
           onSendMessage={handleSendMessage}
         />
       </Box>

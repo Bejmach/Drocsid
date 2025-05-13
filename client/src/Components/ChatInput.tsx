@@ -9,11 +9,12 @@ import Input from '@mui/material/Input';
 import styles from '../styles/Components/ChatInput.module.scss';
 
 interface MessageInputProps {
-  serverId: string;
+  serverId?: string;
+  friendId?: string;
   onSendMessage: (content: string) => void;
 }
 
-const MessageInput: React.FC<MessageInputProps> = ({ serverId, onSendMessage }) => {
+const MessageInput: React.FC<MessageInputProps> = ({ serverId, friendId, onSendMessage }) => {
   const [message, setMessage] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -37,7 +38,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ serverId, onSendMessage }) 
 
         <Input
           fullWidth
-          placeholder={`Message #${serverId}`}
+          placeholder={serverId ? `Message #${serverId}` : `Message @${friendId}`}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           className={styles.inputField}

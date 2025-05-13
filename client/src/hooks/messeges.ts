@@ -2,7 +2,8 @@ interface Message {
   id: string;
   userId: string;
   content: string;
-  serverId: string;
+  serverId: string; 
+  targetId?: string; 
   time: string;
 }
 
@@ -35,6 +36,12 @@ class MessagesStore {
 
   getMessagesByServer(serverId: string) {
     return this.messages.filter(message => message.serverId === serverId);
+  }
+
+  getMessagesByDM(targetId: string) {
+    return this.messages.filter(message => 
+      message.serverId === targetId || message.targetId === targetId
+    );
   }
 }
 

@@ -1,6 +1,6 @@
 @use '../variables' as *;
 
-.serverList {
+.friendsList {
   width: 200px; 
   display: flex;
   flex-direction: column;
@@ -9,14 +9,14 @@
   gap: space(1);
   background-color: $discord-secondary;
 
-  .serverButton {
+  .friendsButton {
     &:hover {
       outline: none !important;
       border: none;
     }
   }
 
-  .serverIcon {
+  .friendsIcon {
     background-color: $server-icon-bg;
     color: white;
     border-radius: 20px;
@@ -46,17 +46,17 @@
 
     &.active {
       background-color: $server-active;
-      .server-text {
+      .friend-text {
         font-weight: 500;
       }
     }
 
-    .server-text {
+    .friend-text {
       font-size: 0.9rem;
     }
   }
 
-  .addServer {
+  .addFriend {
     margin-top: auto;
     background-color: $server-icon-bg;
     color: $server-add-color;

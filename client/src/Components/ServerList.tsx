@@ -1,4 +1,3 @@
-// MultipleFiles/ServerList.tsx
 import { Box, Tooltip } from '@mui/joy';
 import AddIcon from '@mui/icons-material/Add';
 import styles from '../styles/Components/ServerList.module.scss';
@@ -29,7 +28,7 @@ export default function ServerList({
           onClick={onToggleFriends}
         >
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <HomeIcon />
+            <HomeIcon/>
           </Box>
         </button>
       </Tooltip>
