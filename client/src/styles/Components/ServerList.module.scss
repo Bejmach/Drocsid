@@ -30,9 +30,8 @@
     position: relative;
     padding: 0 space(1);
     &:hover {
-      background-color: $server-icon-hover;
       transform: scale(1.05); 
-       outline: none !important; 
+      outline: 2px solid $server-icon-hover;
     }
 
     &:focus,
