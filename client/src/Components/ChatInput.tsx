@@ -5,20 +5,21 @@ import {
   Stack,
 } from '@mui/joy';
 import { AddCircle, EmojiEmotions, Gif, Image, Send } from '@mui/icons-material';
+import Input from '@mui/material/Input';
 import styles from '../styles/Components/ChatInput.module.scss';
-import { Input } from '@mui/material';
 
 interface MessageInputProps {
   serverId: string;
+  onSendMessage: (content: string) => void;
 }
 
-const MessageInput: React.FC<MessageInputProps> = ({ serverId }) => {
+const MessageInput: React.FC<MessageInputProps> = ({ serverId, onSendMessage }) => {
   const [message, setMessage] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (message.trim()) {
-      console.log('Sending message:', message);
+      onSendMessage(message);
       setMessage('');
     }
   };

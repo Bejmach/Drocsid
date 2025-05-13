@@ -1,34 +1,59 @@
+import * as React from 'react';
 import { CssBaseline, Box } from '@mui/joy';
 import ChatInput from './Components/ChatInput';
 import MemberList from './Components/MemberList';
 import Message from './Components/Message';
 import ServerList from './Components/ServerList';
 import './styles/App.scss';
+import messagesStore from './data/messeges';
 
 export default function App() {
+  const [selectedServer, setSelectedServer] = React.useState('1');
+  const [messages, setMessages] = React.useState(messagesStore.getMessagesByServer(selectedServer));
+
+  React.useEffect(() => {
+    const updateMessages = () => {
+      setMessages(messagesStore.getMessagesByServer(selectedServer));
+    };
+    updateMessages();
+  }, [selectedServer]);
+
+  const handleSendMessage = (content: string) => {
+    const newMessage = messagesStore.addMessage({
+      userId: '1',
+      content,
+      serverId: selectedServer,
+      time: new Date().toLocaleTimeString()
+    });
+    setMessages(prev => [...prev, newMessage]);
+  };
+
   return (
     <Box className="app-container">
       <CssBaseline />
       {/* Server List */}
       <Box className="server-list">
-        <ServerList />
+        <ServerList selectedServer={selectedServer} onServerChange={setSelectedServer} />
       </Box>
 
       {/* Main Chat Area */}
       <Box className="main-chat">
-        {[...Array(20)].map((_, i) => (
+        {messages.map((message) => (
           <Message
-            key={i}
-            username={`User ${i + 1}`}
-            content={`Message ${i + 1} in the chat`}
-            timestamp={`${i + 1}:00 PM`}
+            key={message.id}
+            username={`User ${message.userId}`}
+            content={message.content}
+            timestamp={message.time}
           />
         ))}
       </Box>
 
       {/* Chat Input */}
       <Box className="chat-input-container">
-        <ChatInput serverId={"1"} />
+        <ChatInput 
+          serverId={selectedServer}
+          onSendMessage={handleSendMessage}
+        />
       </Box>
 
       {/* Members List */}

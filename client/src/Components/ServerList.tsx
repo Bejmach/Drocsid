@@ -9,12 +9,20 @@ const servers = [
   { id: '2', icon: 'B', tooltip: 'Server B' },
 ];
 
-export default function ServerList() {
+interface ServerListProps {
+  selectedServer: string;
+  onServerChange: (serverId: string) => void;
+}
+
+export default function ServerList({ selectedServer, onServerChange }: ServerListProps) {
   return (
     <Box className={styles.serverList}>
       {servers.map((server) => (
         <Tooltip key={server.id} title={server.tooltip} placement="right">
-          <button className={styles.serverIcon}>
+          <button
+            className={`${styles.serverIcon} ${server.id === selectedServer ? styles.active : ''}`}
+            onClick={() => onServerChange(server.id)}
+          >
             {server.icon}
           </button>
         </Tooltip>
