@@ -1,0 +1,68 @@
+@use 'sass:color';
+@use '../variables' as *;
+
+.messageInputContainer {
+  padding: 0 space(2) space(3);
+}
+
+.messageInput {
+  background-color: $channeltextarea-background;
+  border-radius: 8px;
+  padding: space(1.5) space(2);
+  display: flex;
+  align-items: center;
+  gap: space(2);
+
+  width: 100%;
+
+  .uploadButton {
+    color: $interactive-normal;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $interactive-hover;
+      background-color: transparent;
+    }
+  }
+
+  .messageActions {
+    display: flex;
+    align-items: center;
+  }
+
+  .actionButton {
+    color: $interactive-normal;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $interactive-hover;
+      background-color: transparent;
+    }
+  }
+
+  .sendButton {
+    background-color: $brand-experiment;
+    color: white;
+
+    &:hover {
+      background-color: color.adjust($brand-experiment, $lightness: -10%);
+    }
+  }
+  .inputField {
+    background-color: transparent; 
+    color: white; 
+    border: none;
+    outline: none; 
+    box-shadow: none;
+    &::placeholder {
+      color: white; 
+    }
+    &:focus {
+      border: none; 
+      outline: none; 
+      box-shadow: none; 
+    }
+    
+  }
+}
+

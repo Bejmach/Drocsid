@@ -1,0 +1,79 @@
+@use '../variables' as *;
+
+.friendsList {
+  width: 200px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: space(1) 0;
+  gap: space(1);
+  background-color: $discord-secondary;
+
+  .friendsButton {
+    &:hover {
+      outline: none !important;
+      border: none;
+    }
+  }
+
+  .friendsIcon {
+    background-color: $server-icon-bg;
+    color: white;
+    border-radius: 20px;
+    width: 180px; 
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    position: relative;
+    padding: 0 space(1);
+
+    &:hover {
+      transform: scale(1.05);
+      outline: 2px solid $server-icon-hover;
+    }
+
+    &:focus,
+    &:focus-visible {
+      outline: 2px solid $server-icon-hover;
+    }
+
+    &::before {
+      display: none;
+    }
+
+    &.active {
+      background-color: $server-active;
+      .friend-text {
+        font-weight: 500;
+      }
+    }
+
+    .friend-text {
+      font-size: 0.9rem;
+    }
+  }
+
+  .addFriend {
+    margin-top: auto;
+    background-color: $server-icon-bg;
+    color: $server-add-color;
+    border-radius: 20px;
+    width: 180px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $server-add-hover;
+      color: white;
+      transform: scale(1.05);
+      outline: none;
+    }
+  }
+}
