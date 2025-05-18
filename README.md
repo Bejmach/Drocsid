@@ -84,6 +84,10 @@ erDiagram
   - create new text chat with name
 - ``get::/api/textchat/all``
   - get all text chats in db
+- ``get::/api/textchat/chats/:userid``
+  - get all text chats with user on them
+- ``get::/api/textchat/dm/:userid``
+  - get add dm-s with user on them
 - ``get::/api/usertextchat/join/:chatid/:userid``
   - join user to chat if user and chat exists
 - ``get::/api/usertextchat/all``
