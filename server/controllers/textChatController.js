@@ -18,4 +18,21 @@ async function getAllTextChats(req, res) {
   }
 }
 
-export default {createChat, getAllTextChats}
+async function getAllChatsWithUser(req, res){
+	try {
+   const chat = await textChatService.getAllChatsWithUser(req.params.userid);
+    res.json(chat);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+async function getAllDMWithUser(req, res){
+	try {
+   const chat = await textChatService.getAllDMWithUser(req.params.userid);
+    res.json(chat);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
+export default {createChat, getAllTextChats, getAllChatsWithUser, getAllDMWithUser}
