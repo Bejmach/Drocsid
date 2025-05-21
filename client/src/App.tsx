@@ -1,104 +1,63 @@
-import * as React from 'react';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { CssBaseline, Box } from '@mui/joy';
-import ChatInput from './Components/ChatInput';
+import { useAuth } from './hooks/AuthContext';
+import Auth from './Components/Auth';
+import ServerNavigation from './Components/ServerNavigation';
+import MainChat from './Components/MainChat';
 import MemberList from './Components/MemberList';
-import Message from './Components/Message';
-import ServerList from './Components/ServerList';
-import FriendsList from './Components/FriendList';
-import './styles/App.scss';
-import messagesStore from './hooks/messeges';
+import { Message } from './types';
 
-export default function App() {
-  const [selectedServer, setSelectedServer] = React.useState<string>('1');
-  const [messages, setMessages] = React.useState<Message[]>([]);
-  const [isFriendsList, setIsFriendsList] = React.useState(false);
+const App = () => {
+  const { user, logout } = useAuth();
+  const [selectedChat, setSelectedChat] = useState<string>('');
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [chats, setChats] = useState<Chat[]>([]);
+  const [isLogin, setIsLogin] = useState(true); 
 
-  React.useEffect(() => {
-    const updateMessages = () => {
-      if (selectedServer) {
-        if (isFriendsList) {
-          setMessages(messagesStore.getMessagesByDM(selectedServer));
-        } else {
-          setMessages(messagesStore.getMessagesByServer(selectedServer));
-        }
-      }
-    };
-    updateMessages();
-  }, [selectedServer, isFriendsList]);
-
-  const handleSendMessage = (content: string) => {
-    if (selectedServer) {
-      if (isFriendsList) {
-        const newMessage = messagesStore.addMessage({
-          userId: '1',
-          content,
-          serverId: selectedServer,
-          targetId: selectedServer,
-          time: new Date().toLocaleTimeString()
-        });
-        setMessages(prev => [...prev, newMessage]);
-      } else {
-        const newMessage = messagesStore.addMessage({
-          userId: '1',
-          content,
-          serverId: selectedServer,
-          time: new Date().toLocaleTimeString()
-        });
-        setMessages(prev => [...prev, newMessage]);
-      }
-    }
-  };
-
-  const toggleFriendsList = () => {
-    setIsFriendsList(!isFriendsList);
+  const switchMode = () => {
+    setIsLogin((prev) => !prev); 
   };
 
   return (
     <Box className="app-container">
       <CssBaseline />
-      
-      {/* Server List or Friends List */}
-      <Box className="server-list">
-        {isFriendsList ? (
-          <FriendsList 
-            onBack={toggleFriendsList}
-            onSelectFriend={(friendId) => setSelectedServer(friendId)}
-            selectedServer={selectedServer}
-          />
-        ) : (
-          <ServerList 
-            selectedServer={selectedServer}
-            onServerChange={setSelectedServer}
-            onToggleFriends={toggleFriendsList}
-          />
-        )}
-      </Box>
+      <Router>
+        <Routes>
+          <Route path="/auth" element={<Auth isLogin={isLogin} switchMode={switchMode} />} />
+          <Route
+            path="/"
+            element={
+              user ? (
+                <>
+                  <Box className="server-list">
+                    <ServerNavigation
+                      chats={chats}
+                      selectedChat={selectedChat}
+                      onSelectChat={setSelectedChat}
+                      onLogout={logout}
+                    />
+                  </Box>
+                  
+                  <MainChat
+                    messages={messages}
+                    selectedChat={selectedChat}
+                    onSendMessage={handleSendMessage}
+                  />
 
-      {/* Main Chat Area */}
-      <Box className="main-chat">
-        {messages.map((message) => (
-          <Message
-            key={message.id}
-            username={`User ${message.userId}`}
-            content={message.content}
-            timestamp={message.time}
+                  <Box className="members-list">
+                    <MemberList chatId={selectedChat} />
+                  </Box>
+                </>
+              ) : (
+                <Navigate to="/auth" />
+              )
+            }
           />
-        ))}
-      </Box>
-
-      {/* Chat Input */}
-      <Box className="chat-input-container">
-        <ChatInput 
-          serverId={selectedServer}
-          isFriendsList={isFriendsList}
-          onSendMessage={handleSendMessage}
-        />
-      </Box>
-
-      {/* Members List */}
-      <Box className="members-list">
-        <MemberList />
-      </Box>
+        </Routes>
+      </Router>
     </Box>
   );
-}
+};
+
+export default App;

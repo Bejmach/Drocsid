@@ -41,3 +41,25 @@
     border-left: 1px solid color.adjust($discord-secondary, $lightness: -5%);
   }
 }
+
+.server-navigation {
+  position: relative;
+  
+  .logout-button {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: $server-icon-bg;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: $server-add-hover;
+    }
+  }
+}

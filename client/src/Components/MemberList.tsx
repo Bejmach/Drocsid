@@ -1,34 +1,31 @@
-import { List, ListItem, Typography, Box, Avatar } from '@mui/joy';
-import styles from '../styles/Components/MemberList.module.scss';
+import React from 'react';
+import { Box, Typography } from '@mui/joy';
+import { userService } from '../hooks/api';
+import { useState } from 'react';
 
-interface Member {
-  id: string;
-  username: string;
-  status: 'online' | 'offline' | 'idle';
+interface MemberListProps {
+  chatId: string;
 }
 
-const MemberList: React.FC = () => {
-  const members: Member[] = [
-    { id: '1', username: 'User1', status: 'online' },
-    { id: '2', username: 'User2', status: 'idle' }
-  ];
+const MemberList: React.FC<MemberListProps> = ({ chatId }) => {
+  const [members, setMembers] = useState<string[]>([]);
+
+  React.useEffect(() => {
+    const loadMembers = async () => {
+      if (chatId) {
+        const response = await userService.getAll();
+        setMembers(response.data.map(user => user.name));
+      }
+    };
+    loadMembers();
+  }, [chatId]);
 
   return (
-    <Box className={styles.memberList}>
-      <Typography level="title-lg" sx={{ color: 'white', p: 2 }}>
-        Online Members
-      </Typography>
-      <List>
-        {members.map((member) => (
-          <ListItem key={member.id} className={styles.memberItem}>
-            <Avatar size="sm" />
-            <Typography className={styles.memberName}>
-              {member.username}
-            </Typography>
-            <Box className={`${styles.statusIndicator} ${styles[member.status]}`} />
-          </ListItem>
-        ))}
-      </List>
+    <Box sx={{ width: 240, p: 2, bgcolor: 'background.surface' }}>
+      <Typography level="h6" sx={{ mb: 2 }}>Members</Typography>
+      {members.map(member => (
+        <Typography key={member} sx={{ mb: 1 }}>{member}</Typography>
+      ))}
     </Box>
   );
 };
