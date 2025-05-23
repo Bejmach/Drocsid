@@ -1,0 +1,37 @@
+-- Create the database
+CREATE DATABASE drocsid;
+USE drocsid;
+
+-- Create users table
+CREATE TABLE users (
+    id CHAR(36) PRIMARY KEY,
+    name VARCHAR(64) NOT NULL,
+    email VARCHAR(128) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+-- Create textchats table
+CREATE TABLE textchats (
+    id CHAR(36) PRIMARY KEY,
+    name VARCHAR(128) NOT NULL
+);
+
+-- Create messages table
+CREATE TABLE messages (
+    id CHAR(36) PRIMARY KEY,
+    content VARCHAR(512) NOT NULL,
+    userid CHAR(36) NOT NULL,
+    textchatid CHAR(36) NOT NULL,
+    time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (userid) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (textchatid) REFERENCES textchats(id) ON DELETE CASCADE
+);
+
+-- Create usertextchat table (many-to-many relationship)
+CREATE TABLE usertextchat (
+    userid CHAR(36) NOT NULL,
+    textchatid CHAR(36) NOT NULL,
+    PRIMARY KEY (userid, textchatid),
+    FOREIGN KEY (userid) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (textchatid) REFERENCES textchats(id) ON DELETE CASCADE
+);
