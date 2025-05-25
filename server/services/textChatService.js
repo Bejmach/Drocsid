@@ -28,50 +28,50 @@ async function getAllTextChats(){
 }
 
 async function getAllChatsWithUser(userid){
-	var check = await db.query(`SELECT id FROM users WHERE id = "${userid}"`)
-	if(!check || check[0].length == 0){
-		return { success: false, check };
-	}
+    var check = await db.query(`SELECT id FROM users WHERE id = "${userid}"`)
+    if(!check || check[0].length == 0){
+        return { success: false, check };
+    }
 
-	var query = `SELECT tc.id as id, tc.name as name (
-			SELECT count(utc.userid) 
-			FROM usertextchat utc 
-			WHERE utc.textchatid = tc.id 
-			GROUP BY utc.textchatid) 
-		FROM textchats tc 
-		INNER JOIN usertextchat utc ON utc.textchatid = tc.id 
-		WHERE utc.userid = ${userid} 
-		AND tc.id IN (
-			SELECT utc.textchatid FROM usertextchat utc 
-			GROUP BY 1 
-			HAVING count(utc.userid) = 2 
-		)`
+    var query = `SELECT tc.id as id, tc.name as name, (
+            SELECT count(utc.userid) 
+            FROM usertextchat utc 
+            WHERE utc.textchatid = tc.id 
+            GROUP BY utc.textchatid) as user_count
+        FROM textchats tc 
+        INNER JOIN usertextchat utc ON utc.textchatid = tc.id 
+        WHERE utc.userid = "${userid}" 
+        AND tc.id IN (
+            SELECT utc.textchatid FROM usertextchat utc 
+            GROUP BY 1 
+            HAVING count(utc.userid) != 2 
+        )`
 
-	const [rows] = await db.query(query);
-	return { success: true, rows };
+    const [rows] = await db.query(query);
+    return { success: true, rows };
 }
 async function getAllDMWithUser(userid){
-	var check = await db.query(`SELECT id FROM users WHERE id = "${userid}"`)
-	if(!check || check[0].length == 0){
-		return { success: false, check };
-	}
+    var check = await db.query(`SELECT id FROM users WHERE id = "${userid}"`)
+    if(!check || check[0].length == 0){
+        return { success: false, check };
+    }
 
-	var query = `SELECT tc.id as id, tc.name as name (
-			SELECT count(utc.userid) 
-			FROM usertextchat utc 
-			WHERE utc.textchatid = tc.id 
-			GROUP BY utc.textchatid) 
-		FROM textchats tc 
-		INNER JOIN usertextchat utc ON utc.textchatid = tc.id 
-		WHERE utc.userid = ${userid} 
-		AND tc.id IN (
-			SELECT utc.textchatid FROM usertextchat utc 
-			GROUP BY 1 
-			HAVING count(utc.userid) != 2 
-		)`
+    var query = `SELECT tc.id as id, tc.name as name, (
+            SELECT count(utc.userid) 
+            FROM usertextchat utc 
+            WHERE utc.textchatid = tc.id 
+            GROUP BY utc.textchatid) as user_count
+        FROM textchats tc 
+        INNER JOIN usertextchat utc ON utc.textchatid = tc.id 
+        WHERE utc.userid = "${userid}" 
+        AND tc.id IN (
+            SELECT utc.textchatid FROM usertextchat utc 
+            GROUP BY 1 
+            HAVING count(utc.userid) = 2 
+        )`
 
-	const [rows] = await db.query(query);
-	return { success: true, rows };
+    const [rows] = await db.query(query);
+    return { success: true, rows };
 }
 
 export default {createChat, getAllTextChats, getAllChatsWithUser, getAllDMWithUser};

@@ -1,48 +1,84 @@
+import React, { useEffect, useState } from 'react';
 import { Box, Tooltip } from '@mui/joy';
 import AddIcon from '@mui/icons-material/Add';
-import styles from '../styles/Components/ServerList.module.scss';
-import { Typography } from '@mui/joy';
 import HomeIcon from '@mui/icons-material/Home';
-
-const servers = [
-  { id: '1', icon: 'A', name: 'Server A', tooltip: 'Server A' },
-  { id: '2', icon: 'B', name: 'Server B', tooltip: 'Server B' },
-];
+import { Typography } from '@mui/joy';
+import styles from '../styles/Components/ServerList.module.scss';
+import { userService } from '../hooks/api';
+import { Chat } from '../types';
 
 interface ServerListProps {
+  userId: string;
   selectedServer: string;
   onServerChange: (serverId: string) => void;
   onToggleFriends: () => void;
 }
 
-export default function ServerList({ 
-  selectedServer, 
+export default function ServerList({
+  userId,
+  selectedServer,
   onServerChange,
-  onToggleFriends 
+  onToggleFriends
 }: ServerListProps) {
+  const [servers, setServers] = useState<Chat[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>('');
+
+  useEffect(() => {
+    if (!userId) return;
+
+    setLoading(true);
+    userService
+      .getUserChats(userId)
+      .then(res => {
+        const data = res.data as unknown;
+        let chats: Chat[] = [];
+
+        if (Array.isArray(data)) {
+          chats = data;
+        } else if (
+          typeof data === 'object' &&
+          data !== null &&
+          'rows' in data &&
+          Array.isArray((data as { rows: unknown }).rows)
+        ) {
+          chats = (data as { rows: Chat[] }).rows;
+        }
+
+        setServers(chats);
+      })
+      .catch(err => {
+        console.error(err);
+        setError('Could not load your servers.');
+      })
+      .finally(() => setLoading(false));
+  }, [userId]);
+
+  if (loading) return <Typography>Loading servers…</Typography>;
+  if (error)   return <Typography color="danger">{error}</Typography>;
+
   return (
     <Box className={styles.serverList}>
       <Tooltip title="Friends List" placement="right">
-        <button 
+        <button
           className={`${styles.serverIcon} ${styles.addServer}`}
           onClick={onToggleFriends}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <HomeIcon/>
-          </Box>
+          <HomeIcon />
         </button>
       </Tooltip>
 
-      {servers.map((server) => (
-        <Tooltip key={server.id} title={server.tooltip} placement="right">
+      {servers.map(server => (
+        <Tooltip key={server.id} title={server.name} placement="right">
           <button
-            className={`serverButton ${styles.serverIcon} ${server.id === selectedServer ? styles.active : ''}`}
+            className={`${styles.serverIcon} ${
+              server.id === selectedServer ? styles.active : ''
+            }`}
             onClick={() => onServerChange(server.id)}
-          > 
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              {server.icon}
-              <Typography sx={{ color: 'white' }}>{server.name}</Typography>
-            </Box>
+          >
+            <Typography sx={{ color: 'white' }}>
+              {server.name}
+            </Typography>
           </button>
         </Tooltip>
       ))}

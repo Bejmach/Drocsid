@@ -38,11 +38,11 @@ async function registerUser(name, email, password){
     return { success: true, user };
 }
 
-async function loginUser(name, password){
+async function loginUser(email, password){
   const salt = process.env.SALT;
   const hash = hashPassword(password, salt);
 
-  var query = `SELECT * FROM users WHERE name = "${name}" AND password = "${hash}"`;
+  var query = `SELECT * FROM users WHERE email = "${email}" AND password = "${hash}"`;
   var user = (await db.query(query))[0];
   console.log(user);
 

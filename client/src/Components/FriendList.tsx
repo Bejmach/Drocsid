@@ -14,6 +14,7 @@ interface FriendsListProps {
   onBack: () => void;
   onSelectFriend: (friendId: string) => void;
   selectedServer: string;
+  
 }
 
 const FriendsList: React.FC<FriendsListProps> = ({ 
