@@ -5,7 +5,7 @@ import db from '../models/db.js'
 async function createChat(name) {
     var id = uuidv4();
     var check = await db.query(`SELECT id FROM textchats WHERE id = "${id}"`);
-    while (check || check[0].length > 0) {
+    while (check && check[0].length > 0) {
       id = uuidv4();
       var check = await db.query(`SELECT id FROM textchats WHERE id = "${id}"`);
     }

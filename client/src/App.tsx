@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { CssBaseline, Box } from '@mui/joy';
 import { useAuth } from './hooks/AuthContext';
@@ -6,7 +6,7 @@ import Auth from './components/Auth';
 import ServerList from './components/ServerList'; 
 import FriendsList from './components/FriendList'; 
 import MemberList from './components/MemberList'; 
-import { Message } from './types';
+import { Message, Chat } from './types';
 import { messageService, chatService } from './hooks/api';
 import ChatInput from './components/ChatInput';
 import './styles/App.scss';
@@ -81,8 +81,9 @@ const App = () => {
                   <Box className="server-list">
                   {isFriendsList ? (
                     <FriendsList 
-                      onBack={toggleFriendsList}
-                      onSelectFriend={(friendId) => setSelectedServer(friendId)}
+                      userId={user.id}
+                      onToggleFriends={toggleFriendsList}
+                      onServerChange={(friendId) => setSelectedServer(friendId)}
                       selectedServer={selectedServer}
                     />
                   ) : (
@@ -117,7 +118,7 @@ const App = () => {
 
                   {/* Members List */}
                   <Box className="members-list">
-                    <MemberList/> 
+                    <MemberList chatId={selectedServer}/>
                   </Box>
                 </>
               ) : (

@@ -62,7 +62,7 @@ async function getAllUsers(){
 }
 
 async function getUsersFromChat(chatid){
-  var query = `SELECT * FROM users u INNER JOIN usertextchat utc ON u.id = utc.userid INNER JOIN textchats tc ON tc.id = utc.textchatid WHERE tc.id = "${chatid}"`;
+  var query = `SELECT u.id, u.name FROM users u INNER JOIN usertextchat utc ON u.id = utc.userid INNER JOIN textchats tc ON tc.id = utc.textchatid WHERE tc.id = "${chatid}"`;
   const users = (await db.query(query))[0];
 
   return { success: true, users };

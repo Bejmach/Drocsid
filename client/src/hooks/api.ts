@@ -36,7 +36,8 @@ export const chatService = {
   getAll: () => api.get<Chat[]>('/textchat/all'),
   getDMs: (userId: string) => api.get<Chat[]>(`/textchat/dm/${userId}`),
   join: (chatId: string, userId: string) =>
-    api.get(`/usertextchat/join/${chatId}/${userId}`)
+    api.get(`/usertextchat/join/${chatId}/${userId}`),
+  getChatUsers: (chatId: string) => api.get<User[]>(`/users/chat/${chatId}`)
 };
 
 export const messageService = {
@@ -51,3 +52,4 @@ export const messageService = {
   
   getAll: () => api.get<Message[]>('/messages/all')
 };
+
