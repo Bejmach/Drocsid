@@ -32,7 +32,7 @@ export const userService = {
 };
 
 export const chatService = {
-  create: (name: string) => api.post<Chat>(`/textchat/create/${name}`),
+  create: (name: string) => api.get<Chat>(`/textchat/create/${name}`),
   getAll: () => api.get<Chat[]>('/textchat/all'),
   getDMs: (userId: string) => api.get<Chat[]>(`/textchat/dm/${userId}`),
   join: (chatId: string, userId: string) =>
@@ -45,7 +45,7 @@ export const messageService = {
     api.get<Message[]>(`/messages/get/${chatId}/${limit}/${offset}`),
   
   getMessagesAfter: (chatId: string, messageId: string) =>
-    api.get<Message[]>(`/messages/after/${chatId}/${messageId}`),
+    api.get<Message[]>(`/messages/get/after/${chatId}/${messageId}`),
   
   send: (chatId: string, userId: string, content: string) =>
     api.get<Message>(`/messages/send/${chatId}/${userId}/${content}`),
