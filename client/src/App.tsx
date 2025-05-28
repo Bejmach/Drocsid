@@ -37,86 +37,92 @@ const App = () => {
     }
   }
 
-  useEffect(() => {
-    if (!selectedServer) return
+  async function syncMessages() {
+      try {
+        const lastId = lastMessageIdRef.current;
 
-    fetchServerName(selectedServer)
+        if (!lastId) return;
+        
+        const resp = await messageService.getMessagesAfter(selectedServer, lastId);
+        if (resp.data.length > 0) {
+          setMessages(prev => {
+            const existingIds = new Set(prev.map(m => m.id));
+            const newMessages = resp.data.filter(msg => !existingIds.has(msg.id));
+            
+            if (newMessages.length === 0) return prev;
+            
+            const updated = [...prev, ...newMessages];
+            messagesRef.current = updated;
+            lastMessageIdRef.current = updated[updated.length - 1].id;
+            return updated;
+          });
+        }
+      } catch (err) {
+        console.error('Failed to fetch new messages', err);
+      }
+    }
+
+  useEffect(() => {
+    if (!selectedServer) return;
+
+    fetchServerName(selectedServer);
 
     const fetchInitialMessages = async () => {
       try {
-        const resp = await messageService.getMessages(selectedServer, 100, 0)
-        setMessages(resp.data)
-        messagesRef.current = resp.data
+        const resp = await messageService.getMessages(selectedServer, 100, 0);
+        setMessages(resp.data);
+        messagesRef.current = resp.data;
         
         if (resp.data.length > 0) {
-          lastMessageIdRef.current = resp.data[resp.data.length - 1].id
+          lastMessageIdRef.current = resp.data[resp.data.length - 1].id;
         } else {
-          lastMessageIdRef.current = null 
+          lastMessageIdRef.current = null;
         }
       } catch (err) {
-        console.error('Failed to fetch messages', err)
-        lastMessageIdRef.current = null
+        console.error('Failed to fetch messages', err);
+        lastMessageIdRef.current = null;
       }
-    }
+    };
     
-    fetchInitialMessages()
+    fetchInitialMessages();
 
     const intervalId = window.setInterval(async () => {
-      try {
-        const lastId = lastMessageIdRef.current
-        console.log(`[intervalId] Fetching messages after: ${lastId}`)
-
-        if (!lastId) return
-        console.log(`[intervalId] Last message ID: ${lastId}`)
-        
-        const resp = await messageService.getMessagesAfter(selectedServer, lastId)
-        console.log(`[intervalId] Received ${resp.data.length} new messages`)
-        if (resp.data.length > 0) {
-          setMessages(prev => {
-            const updated = [...prev, ...resp.data]
-            messagesRef.current = updated
-            lastMessageIdRef.current = updated[updated.length - 1].id
-            return updated
-          })
-        }
-      } catch (err) {
-        console.error('Failed to fetch new messages', err)
-      }
-    }, 5000)
+      syncMessages()
+    }, 5000);
 
     return () => {
-      clearInterval(intervalId)
-    }
-  }, [selectedServer])
+      clearInterval(intervalId);
+    };
+  });
 
   const handleSendMessage = async (content: string) => {
-    if (!selectedServer || !user) return
-    
+    if (!selectedServer || !user) return;
     try {
-      const resp = await messageService.send(
+      await messageService.send(
         selectedServer, 
         user.id, 
         encodeURIComponent(content)
-      )
-      const saved = resp.data
-      const newMsg: Message = {
-        id: saved.id,
-        textChatId: selectedServer,
-        userId: saved.userId ?? user.id,
-        content: saved.content ?? content,
-        time: saved.time ?? new Date().toISOString(),
-        name: user.name 
-      }
-      
-      setMessages(prev => {
-        const updated = [...prev, newMsg]
-        messagesRef.current = updated
-        return updated
-      })
+      );
+      syncMessages()
     } catch (err) {
-      console.error('Failed to send message', err)
+      console.error('Failed to send message', err);
+      if (messagesRef.current.length > 0) {
+        lastMessageIdRef.current = messagesRef.current[messagesRef.current.length - 1].id;
+      }
     }
+  };
+
+  const messageContainerRef = useRef<HTMLDivElement | null>(null);
+  const hasScrolledRef = useRef(false); 
+
+  useEffect(() => {
+  if (!hasScrolledRef.current && messages.length > 0 && messageContainerRef.current) {
+    messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+    hasScrolledRef.current = true;
   }
+}, [messages]);
+
+
 
   return (
     <Box className="app-container">
@@ -147,7 +153,7 @@ const App = () => {
                     )}
                   </Box>
 
-                  <Box className="main-chat">
+                  <Box className="main-chat" ref={messageContainerRef}>
                     {!selectedServer ? (
                       <div className="empty-state">
                         Select a server or friend to start chatting!
@@ -163,6 +169,7 @@ const App = () => {
                       ))
                     )}
                   </Box>
+
 
                   <Box className="chat-input-container">
                     <ChatInput
