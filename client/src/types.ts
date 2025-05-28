@@ -9,7 +9,6 @@ export interface Message {
   userId: string;
   textChatId: string;
   time: string;
-  name : string;
 }
 export interface Chat {
   id: string;
