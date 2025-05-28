@@ -64,10 +64,13 @@ const App = () => {
     const intervalId = window.setInterval(async () => {
       try {
         const lastId = lastMessageIdRef.current
+        console.log(`[intervalId] Fetching messages after: ${lastId}`)
 
         if (!lastId) return
+        console.log(`[intervalId] Last message ID: ${lastId}`)
         
         const resp = await messageService.getMessagesAfter(selectedServer, lastId)
+        console.log(`[intervalId] Received ${resp.data.length} new messages`)
         if (resp.data.length > 0) {
           setMessages(prev => {
             const updated = [...prev, ...resp.data]
