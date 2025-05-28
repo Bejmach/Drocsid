@@ -1,6 +1,7 @@
 @use './variables' as *;
 @use 'sass:color';
 
+/* Desktop layout */
 .app-container {
   display: grid;
   grid-template-columns: auto 1fr $members-width;
@@ -15,6 +16,10 @@
     grid-row: 1 / span 2;
     background-color: $discord-secondary;
     border-right: 1px solid color.adjust($discord-secondary, $lightness: -5%);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .main-chat {
@@ -24,6 +29,7 @@
     flex-direction: column;
     overflow-y: auto;
     padding: space(2);
+    height: 100%;
   }
 
   .chat-input-container {
@@ -38,5 +44,177 @@
     grid-row: 1 / span 2;
     background-color: $discord-secondary;
     border-left: 1px solid color.adjust($discord-secondary, $lightness: -5%);
+    height: 100%;
   }
+}
+
+/* Mobile layout */
+@media (max-width: 768px) {
+  .app-container {
+    display: block;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    background-color: $discord-dark;
+  }
+
+  .mobile-panel {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    
+    &.server-panel {
+      background-color: $discord-secondary;
+    }
+    
+    &.chat-panel {
+      background-color: $discord-dark;
+    }
+    
+    &.members-panel {
+      background-color: $discord-secondary;
+    }
+  }
+
+  /* Mobile-specific styles for server list */
+  .server-list.mobile-view {
+    height: 100% !important;
+    width: 100% !important;
+    border: none !important;
+    background-color: transparent !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 10px;
+    
+    /* Larger server icons */
+    .server-item {
+      width: 80px;
+      height: 80px;
+      margin: 15px auto;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: $discord-primary;
+      font-size: 1.8rem;
+      color: white;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: color.adjust($discord-primary, $lightness: 10%);
+      }
+      
+      &.selected {
+        background-color: $discord-primary;
+        transform: scale(1.1);
+      }
+    }
+    
+    /* Friend list items */
+    .friend-item {
+      padding: 20px 15px;
+      margin: 10px 0;
+      border-radius: 10px;
+      background-color: color.adjust($discord-secondary, $lightness: 5%);
+      display: flex;
+      align-items: center;
+      font-size: 1.4rem;
+      
+      .avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        margin-right: 15px;
+        background-color: $discord-primary;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.8rem;
+      }
+    }
+  }
+
+  .main-chat {
+    flex: 1;
+    overflow-y: auto;
+    padding: space(2);
+  }
+
+  .chat-input-container {
+    padding: space(2);
+    background-color: $discord-secondary;
+    width: 100%;
+  }
+
+  .members-list {
+    height: 100% !important;
+    padding: space(2);
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background-color: $discord-secondary;
+    border-bottom: 1px solid color.adjust($discord-secondary, $lightness: -5%);
+    
+    .back-button, .members-button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 5px;
+      transition: background-color 0.2s;
+      
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+    }
+    
+    .panel-title {
+      color: white;
+      font-weight: bold;
+      flex: 1;
+      text-align: center;
+      font-size: 1.3rem;
+    }
+  }
+  
+  /* Add server button */
+  .add-server-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: $discord-primary;
+    color: white;
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+  }
+}
+
+/* Empty state styling */
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #888;
+  font-style: italic;
+  text-align: center;
+  padding: space(2);
+  font-size: 1.2rem;
 }
