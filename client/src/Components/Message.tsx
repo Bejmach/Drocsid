@@ -7,6 +7,9 @@ interface MessageProps {
   timestamp: string
 }
 
+const isImageUrl = (url: string) =>
+  /\.(jpeg|jpg|gif|png|webp|svg)$/.test(url.split('?')[0]);
+
 const Message: React.FC<MessageProps> = ({ username, content, timestamp }) => (
   <Box className={styles.messageContainer}>
     <Avatar className={styles.avatar} />
@@ -17,7 +20,11 @@ const Message: React.FC<MessageProps> = ({ username, content, timestamp }) => (
           {timestamp}
         </Typography>
       </Typography>
-      <Typography className={styles.messageText}>{content}</Typography>
+      {isImageUrl(content) ? (
+        <img src={decodeURIComponent(content)} alt="uploaded" className={styles.messageImage} />
+      ) : (
+        <Typography className={styles.messageText}>{decodeURIComponent(content)}</Typography>
+      )}
     </Box>
   </Box>
 )

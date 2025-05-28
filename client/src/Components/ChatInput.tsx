@@ -4,7 +4,7 @@ import {
   IconButton,
   Stack,
 } from '@mui/joy';
-import { AddCircle, EmojiEmotions, Gif, Image, Send } from '@mui/icons-material';
+import {EmojiEmotions, Gif, Send } from '@mui/icons-material';
 import Input from '@mui/material/Input';
 import styles from '../styles/Components/ChatInput.module.scss';
 
@@ -31,14 +31,6 @@ const MessageInput: React.FC<MessageInputProps> = ({ serverId, serverName, frien
   return (
     <Box className={styles.messageInputContainer}>
       <form onSubmit={handleSubmit} className={styles.messageInput}>
-        <IconButton
-          variant="plain"
-          className={styles.uploadButton}
-          component="label"
-        >
-          <AddCircle />
-        </IconButton>
-
         <Input
           fullWidth
           placeholder={serverId ? `Message ${serverName}` : `Message @${friendId}`}
@@ -51,9 +43,6 @@ const MessageInput: React.FC<MessageInputProps> = ({ serverId, serverName, frien
         <Stack direction="row" spacing={1} className={styles.messageActions}>
           <IconButton variant="plain" className={styles.actionButton}>
             <Gif />
-          </IconButton>
-          <IconButton variant="plain" className={styles.actionButton}>
-            <Image />
           </IconButton>
           <IconButton variant="plain" className={styles.actionButton}>
             <EmojiEmotions />
