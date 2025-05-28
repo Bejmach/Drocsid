@@ -7,8 +7,8 @@ import ServerList from './components/ServerList'
 import FriendsList from './components/FriendList'
 import MemberList from './components/MemberList'
 import MessageComponent from './components/Message'
-import { Message, Chat, User } from './types'
-import { messageService, chatService, userService } from './hooks/api'
+import { Message, Chat } from './types'
+import { messageService, chatService } from './hooks/api'
 import ChatInput from './components/ChatInput'
 import './styles/App.scss'
 
@@ -17,60 +17,70 @@ const App = () => {
   const [selectedServer, setSelectedServer] = useState<string>('')
   const [messages, setMessages] = useState<Message[]>([])
   const messagesRef = useRef<Message[]>([])
+  const lastMessageIdRef = useRef<string | null>(null) // Dedicated ref for last message ID
   const [isFriendsList, setIsFriendsList] = useState(false)
   const [isLogin, setIsLogin] = useState(true)
   const [serverName, setServerName] = useState<string>('')
-  const [users, setUsers] = useState<User[]>([])
   const user = Array.isArray(userArray) && userArray.length > 0 ? userArray[0] : null
 
   const switchMode = () => setIsLogin(prev => !prev)
   const toggleFriendsList = () => setIsFriendsList(prev => !prev)
 
   const fetchServerName = async (chatId: string) => {
-    const resp = await chatService.getAll()
-    const found = resp.data.find((c: Chat) => c.id === chatId)
-    setServerName(found ? found.name : '')
-  }
-
-  const getUsername = (userId: string) => {
-    const found = users.find(u => u.id === userId)
-    return found ? found.name : `User ${userId}`
-  }
-
-  useEffect(() => {
-    if (!user) return
-    const fetchUsers = async () => {
-      try {
-        const resp = await userService.getAll()
-        setUsers(resp.data)
-      } catch (err) {
-        console.error('Failed to fetch users', err)
-      }
+    try {
+      const resp = await chatService.getAll()
+      const found = resp.data.find((c: Chat) => c.id === chatId)
+      setServerName(found ? found.name : '')
+    } catch (err) {
+      console.error('Failed to fetch server name', err)
+      setServerName('')
     }
-    fetchUsers()
-  }, [user])
+  }
 
   useEffect(() => {
     if (!selectedServer) return
 
     fetchServerName(selectedServer)
 
-    ;(async () => {
-      const resp = await messageService.getMessages(selectedServer, 100, 0)
-      setMessages(resp.data)
-      messagesRef.current = resp.data
-    })()
+    const fetchInitialMessages = async () => {
+      try {
+        const resp = await messageService.getMessages(selectedServer, 100, 0)
+        setMessages(resp.data)
+        messagesRef.current = resp.data
+        
+        if (resp.data.length > 0) {
+          lastMessageIdRef.current = resp.data[resp.data.length - 1].id
+        } else {
+          lastMessageIdRef.current = null 
+        }
+      } catch (err) {
+        console.error('Failed to fetch messages', err)
+        lastMessageIdRef.current = null
+      }
+    }
+    
+    fetchInitialMessages()
 
     const intervalId = window.setInterval(async () => {
-      const lastList = messagesRef.current
-      const lastId = lastList.length ? lastList[lastList.length - 1].id : undefined
-      const resp = await messageService.getMessagesAfter(selectedServer, lastId || '')
-      if (resp.data.length > 0) {
-        setMessages(prev => {
-          const updated = [...prev, ...resp.data]
-          messagesRef.current = updated
-          return updated
-        })
+      try {
+        const lastId = lastMessageIdRef.current
+        console.log(`[intervalId] Fetching messages after: ${lastId}`)
+
+        if (!lastId) return
+        console.log(`[intervalId] Last message ID: ${lastId}`)
+        
+        const resp = await messageService.getMessagesAfter(selectedServer, lastId)
+        console.log(`[intervalId] Received ${resp.data.length} new messages`)
+        if (resp.data.length > 0) {
+          setMessages(prev => {
+            const updated = [...prev, ...resp.data]
+            messagesRef.current = updated
+            lastMessageIdRef.current = updated[updated.length - 1].id
+            return updated
+          })
+        }
+      } catch (err) {
+        console.error('Failed to fetch new messages', err)
       }
     }, 5000)
 
@@ -81,20 +91,31 @@ const App = () => {
 
   const handleSendMessage = async (content: string) => {
     if (!selectedServer || !user) return
-    const resp = await messageService.send(selectedServer, user.id, encodeURIComponent(content))
-    const saved = resp.data
-    const newMsg: Message = {
-      id: saved.id,
-      textChatId: selectedServer,
-      userId: saved.userId ?? user.id,
-      content: saved.content ?? encodeURIComponent(content),
-      time: saved.time ?? new Date().toISOString()
+    
+    try {
+      const resp = await messageService.send(
+        selectedServer, 
+        user.id, 
+        encodeURIComponent(content)
+      )
+      const saved = resp.data
+      const newMsg: Message = {
+        id: saved.id,
+        textChatId: selectedServer,
+        userId: saved.userId ?? user.id,
+        content: saved.content ?? content,
+        time: saved.time ?? new Date().toISOString(),
+        name: user.name 
+      }
+      
+      setMessages(prev => {
+        const updated = [...prev, newMsg]
+        messagesRef.current = updated
+        return updated
+      })
+    } catch (err) {
+      console.error('Failed to send message', err)
     }
-    setMessages(prev => {
-      const updated = [...prev, newMsg]
-      messagesRef.current = updated
-      return updated
-    })
   }
 
   return (
@@ -132,10 +153,10 @@ const App = () => {
                         Select a server or friend to start chatting!
                       </div>
                     ) : (
-                      messages.map((msg, idx) => (
+                      messages.map((msg) => (
                         <MessageComponent
-                          key={msg.id ?? `msg-${idx}`}
-                          username={getUsername(msg.userId)}
+                          key={msg.id}
+                          username={msg.name || `User ${msg.userId}`}
                           content={decodeURIComponent(msg.content)}
                           timestamp={new Date(msg.time).toLocaleTimeString()}
                         />

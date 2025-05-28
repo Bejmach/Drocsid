@@ -25,7 +25,6 @@ export default function ServerList({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
 
-  // Dialog state for creating a server
   const [dialogOpen, setDialogOpen] = useState(false);
   const [serverName, setServerName] = useState('');
   const [userId1, setUserId1] = useState('');
@@ -83,22 +82,20 @@ export default function ServerList({
   const handleCreateServer = async () => {
     setDialogError('');
     try {
-      // Create the server
       const createRes = await chatService.create(serverName);
       const chatId = createRes.data.message[0]?.id;
       if (!chatId) {
         throw new Error('Server creation failed');
       }
 
-      // Join the creator
       await chatService.join(chatId, userId);
-      // Join additional users
+
       const extraIds = [userId1, userId2, userId3].filter(id => id.trim());
       for (const uid of extraIds) {
         await chatService.join(chatId, uid);
       }
 
-      // Select new server and refresh
+
       onServerChange(chatId);
       fetchServers();
       closeDialog();
