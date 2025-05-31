@@ -1,4 +1,5 @@
 # Drocsid
+> When using database provided in repo, you can use users for tests email: kajmaks@gmail.com p: kajmaks, email: no@no.no p: no1234
 
 ### Project Structure
 
